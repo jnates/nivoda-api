@@ -15,6 +15,15 @@ define( 'PASSWORD', 'staging-nivoda-22' );
 
 register_activation_hook( __FILE__, 'nivoda_api_activate' );
 
+function nivoda_api_config() {
+  add_option('nivoda_username', getenv('API_KEY'));
+  add_option('nivoda_password', getenv('SECRET_KEY'));
+}
+// Plugin activation function
+function nivoda_api_activate() {
+  nivoda_api_config();
+}
+
 // Function to authenticate the connection to the Nivoda API
 function nivoda_api_auth() {
   $username =  USERNAME;// get_option('nivoda_username');
