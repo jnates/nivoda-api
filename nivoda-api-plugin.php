@@ -9,9 +9,6 @@ Author URI:<URL del autor del plugin>
 License:<Licencia con la que se distribuye el plugin. La más frecuente es GPL>
 Text domain: <nombre-del-plugin (para agrupar los textos traducibles del plugin)>
 */
-define( 'GRAPHQL_API_URL', 'https://wdc-intg-customer-staging.herokuapp.com/api/diamonds' );  
-define( 'USERNAME', 'testaccount@sample.com' );  
-define( 'PASSWORD', 'staging-nivoda-22' );  
 //require_once( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );  
 // Configuration function to store Nivoda API credentials
 function nivoda_api_config() {
@@ -28,9 +25,9 @@ register_activation_hook( __FILE__, 'nivoda_api_activate' );
 
 // Function to authenticate the connection to the Nivoda API
 function nivoda_api_auth() {
-  $username =  USERNAME;// get_option('nivoda_username');
-  $password =  PASSWORD; // get_option('nivoda_password');
-  $endpoint_url = GRAPHQL_API_URL;
+  $username =  getenv('USERNAME');// get_option('nivoda_username');
+  $password =   getenv('PASSWORD'; // get_option('nivoda_password');
+  $endpoint_url =  getenv('GRAPHQL_API_UR');
   $authenticate = '
   query { 
     authenticate
