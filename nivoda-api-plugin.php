@@ -12,7 +12,6 @@ Text domain: <nombre-del-plugin (para agrupar los textos traducibles del plugin)
 define( 'GRAPHQL_API_URL', 'https://wdc-intg-customer-staging.herokuapp.com/api/diamonds' );  
 define( 'USERNAME', 'testaccount@sample.com' );  
 define( 'PASSWORD', 'staging-nivoda-22' );  
-//require_once( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );  
 // Configuration function to store Nivoda API credentials
 function nivoda_api_config() {
   add_option('nivoda_username', getenv('API_KEY'));
@@ -117,27 +116,19 @@ function get_all_diamonds($token) {
 }
 
 // Function to display results on WordPress page using custom shortcode
-function nivoda_api_display() {
-  $output = 'frontend viejo de nates';
+function nivoda_api_display($request) {
+ 
+//   if ( ! current_user_can( 'read' ) ) {
+//     return new WP_Error( 'my_plugin_no_permission', 'You do not have permission to access this data.', array( 'status' => 401 ) );
+// }
   $token = nivoda_api_auth();
   $response = get_all_diamonds($token);
-  
-  if ( $response ) {
-    foreach ( $response['diamonds_by_query']['items'] as $diamond ) {
-        echo '<ul>';
-        echo '<li>' . $diamond['id'] . '</li>';
-        echo '<li>' . $diamond['price'] . '</li>';
-        echo '<li>' . $diamond['discount'] . '</li>';
-        echo '<li>' . $diamond['diamond']['id'] . '</li>';
-        echo '<li>' . $diamond['diamond']['image'] . '</li>';
-        echo '<li>' . $diamond['diamond']['availability'] . '</li>';
-        echo '<li>' . $diamond['diamond']['final_price'] . '</li>';
-        echo '<li>' . $diamond['diamond']['location'] . '</li>';
-        echo '</ul>';
-    }
-}
-  $output =  $output . $response; 
-  return $output;  // Generate the HTML to display the results of the query to the Nivoda API
+  return new WP_REST_Response(array('mensaje'=>'success','data' => $response['diamonds_by_query']['items']),200); 
 }
 
-add_shortcode('nivoda-api', 'nivoda_api_display' );
+add_action('rest_api_init', function (){
+  register_rest_route('nivoda-api/v1', '/diamonds', array(
+    'methods' => 'GET',
+    'callback' => 'nivoda_api_display',
+  ));
+});
