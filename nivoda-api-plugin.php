@@ -15,15 +15,6 @@ define( 'PASSWORD', 'staging-nivoda-22' );
 
 register_activation_hook( __FILE__, 'nivoda_api_activate' );
 
-function nivoda_api_config() {
-  add_option('nivoda_username', getenv('API_KEY'));
-  add_option('nivoda_password', getenv('SECRET_KEY'));
-}
-// Plugin activation function
-function nivoda_api_activate() {
-  nivoda_api_config();
-}
-
 // Function to authenticate the connection to the Nivoda API
 function nivoda_api_auth() {
   $username =  USERNAME;// get_option('nivoda_username');
@@ -110,19 +101,21 @@ function get_all_diamonds($token) {
         echo 'error getting data '.$result['errors'][0]['message'];
         return null;
     }
-    return $result['data'];
+    return $result['data']['diamonds_by_query']['items'];
   }
 }
 
 // Function to display results on WordPress page using custom shortcode
 function nivoda_api_display($request) {
  
-//   if ( ! current_user_can( 'read' ) ) {
-//     return new WP_Error( 'my_plugin_no_permission', 'You do not have permission to access this data.', array( 'status' => 401 ) );
-// }
   $token = nivoda_api_auth();
   $response = get_all_diamonds($token);
-  return new WP_REST_Response(array('mensaje'=>'success','data' => $response['diamonds_by_query']['items']),200); 
+  $increment=0.20;
+  foreach($response as $item){
+    $item['price']=Ceil($item['price'] + ($item['price'] *  $increment));
+  }
+
+  return new WP_REST_Response(array('mensaje'=>'success','data' => $response),200); 
 }
 
 add_action('rest_api_init', function (){
