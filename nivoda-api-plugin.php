@@ -9,9 +9,9 @@ Author URI:<URL del autor del plugin>
 License:<Licencia con la que se distribuye el plugin. La más frecuente es GPL>
 Text domain: <nombre-del-plugin (para agrupar los textos traducibles del plugin)>
 */
-define( 'GRAPHQL_API_URL', 'https://wdc-intg-customer-staging.herokuapp.com/api/diamonds' );  
-define( 'USERNAME', 'testaccount@sample.com' );  
-define( 'PASSWORD', 'staging-nivoda-22' );  
+define( 'GRAPHQL_API_URL', 'https://integrations.nivoda.net/api/diamonds' );  
+define( 'USERNAME', 'Info@smithgreenjewellers.com' );  
+define( 'PASSWORD', 'Sm1thgr33n00' );  
 
 register_activation_hook( __FILE__, 'nivoda_api_activate' );
 
@@ -36,6 +36,7 @@ function nivoda_api_auth() {
    ),
    'body' => json_encode( array( 'query' => $authenticate ) ),
  );
+ 
   $response = wp_remote_post($endpoint_url, $args );
   if ( is_wp_error( $response ) ) {
     echo 'entro error get :<pre>';
@@ -90,6 +91,7 @@ function get_all_diamonds($token) {
     ),
     'body' => json_encode( array( 'query' => $query ) ),
   );
+
   $response = wp_remote_post($endpoint_url, $args );
   if ( is_wp_error( $response ) ) {
    return '<p>Error connecting to Nivoda API: ' . $response->get_error_message() . '</p>';
@@ -111,6 +113,7 @@ function nivoda_api_display($request) {
   $token = nivoda_api_auth();
   $response = get_all_diamonds($token);
   $increment=0.20;
+
   foreach($response as $item){
     $item['price']=Ceil($item['price'] + ($item['price'] *  $increment));
   }
