@@ -58,7 +58,7 @@ function nivoda_api_auth() {
 function get_all_diamonds($token) {
   $endpoint_url = GRAPHQL_API_URL;
   $query = '
-  query () {
+  query {
       diamonds_by_query(query: {has_image:true}) {
         items {
           id
