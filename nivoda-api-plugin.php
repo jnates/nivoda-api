@@ -9,9 +9,9 @@ Author URI:<URL del autor del plugin>
 License:<Licencia con la que se distribuye el plugin. La más frecuente es GPL>
 Text domain: <nombre-del-plugin (para agrupar los textos traducibles del plugin)>
 */
-define( 'GRAPHQL_API_URL', 'https://integrations.nivoda.net/api/diamonds' );  
-define( 'USERNAME', 'Info@smithgreenjewellers.com' );  
-define( 'PASSWORD', 'Sm1thgr33n00' );  
+define( 'GRAPHQL_API_URL', 'https://intg-customer-staging.nivodaapi.net/api/diamonds' );  
+define( 'USERNAME', 'testaccount@sample.com' );  
+define( 'PASSWORD', 'staging-nivoda-22' );  
 
 register_activation_hook( __FILE__, 'nivoda_api_activate' );
 
