@@ -1,17 +1,18 @@
 <?php
 /*
-Plugin Name: nivoda
-Plugin URI: <URL del plugin (puede ser la del autor)>
-Description: <Descripción breve del plugin y sus funcionalidades>
-Version:<Versión del plugin>
-Author:<Autor del plugin>
-Author URI:<URL del autor del plugin>
-License:<Licencia con la que se distribuye el plugin. La más frecuente es GPL>
-Text domain: <nombre-del-plugin (para agrupar los textos traducibles del plugin)>
+Plugin Name: Nivoda API Integration
+Plugin URI: https://example.com/nivoda-plugin
+Description: Plugin for integrating with the Nivoda API to retrieve diamond information.
+Version: 1.0
+Author: Juan Nates
+Author URI: https://example.com/author
+License: GPL
+Text domain: nivoda-plugin
 */
+
 define( 'GRAPHQL_API_URL', 'https://integrations.nivoda.net/api/diamonds' );  
-define( 'USERNAME', 'Info@smithgreenjewellers.com' );  
-define( 'PASSWORD', 'Sm1thgr33n00' );  
+define( 'USERNAME', '' );  
+define( 'PASSWORD', '' );  
 
 register_activation_hook( __FILE__, 'nivoda_api_activate' );
 
@@ -29,6 +30,7 @@ function nivoda_api_auth() {
         {token}
     }
   }';
+
   $args = array(
    'method' => 'POST',
    'headers' => array(
@@ -109,7 +111,6 @@ function get_all_diamonds($token) {
 
 // Function to display results on WordPress page using custom shortcode
 function nivoda_api_display($request) {
- 
   $token = nivoda_api_auth();
   $response = get_all_diamonds($token);
   $increment=0.20;
